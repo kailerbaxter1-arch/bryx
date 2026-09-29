@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>BRYX Terminal</title>
+<script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;position:fixed;width:100%;background:#131722;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+#app{display:flex;flex-direction:column;height:100dvh;width:100vw}
+#header{height:44px;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 12px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+#subHeader{height:44px;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 10px;border-bottom:1px solid #e5e5ea;flex-shrink:0}
+#chartWrap{flex:1;position:relative;background:#131722;overflow:hidden}
+#chart{width:100%;height:100%}
+#bottomBar{height:68px;background:#fff;display:flex;align-items:center;gap:10px;padding:8px 12px;padding-bottom:calc(8px + env(safe-area-inset-bottom));border-top:1px solid #e5e5ea;flex-shrink:0}
+.btn{flex:1;height:44px;border:none;border-radius:10px;font-weight:700;color:#fff;font-size:14px}
+.sell{background:#ff3b30} .buy{background:#0abf9a}
+.sellTop,.buyTop{padding:4px 10px;border-radius:6px;color:#fff;font-size:11px;text-align:center;line-height:1.2}
+.sellTop{background:#ff3b30} .buyTop{background:#007aff}
+#pc{display:none}
+@media(min-width:769px){
+#pc{display:flex!important;height:100vh;width:100vw;flex-direction:column} #app{display:none!important}
+}
+ @media(max-width:768px){ #pc{display:none!important} #app{display:flex!important} }
+</style>
+</head>
+<body>
+<!-- MOBILE APP -->
+<div id="app">
+<div id="header"><b style="letter-spacing:2px">BRYX</b><div style="display:flex;gap:6px"><button style="background:#2962ff;color:#fff;border:none;padding:6px 10px;border-radius:6px;font-size:11px">+ Broker</button><span style="background:#e8f5e9;color:#2e7d32;padding:4px 6px;border-radius:4px;font-size:10px">● Live</span></div></div>
+<div id="subHeader">
+<div><b style="font-size:13px">XAUUSD</b><span style="font-size:10px;color:#8e8e93"> M1</span></div>
+<div style="display:flex;gap:6px;align-items:center">
+<div class="sellTop">SELL<br><span id="bidM">4170.72</span></div>
+<div style="background:#f2f2f7;padding:4px 8px;border-radius:6px;font-size:11px">0.15</div>
+<div class="buyTop">BUY<br><span id="askM">4170.38</span></div>
+</div>
+</div>
+<div id="chartWrap"><div id="chart"></div></div>
+<div id="bottomBar"><button class="btn sell">↓ SELL</button><button class="btn buy">↑ BUY</button></div>
+</div>
+
+<!-- PC VIEW (same as before) -->
+<div id="pc" style="flex-direction:column;height:100vh">
+<div style="height:40px;background:#101114;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 15px"><b>BRYX</b><button style="background:#2962ff;color:#fff;border:none;padding:6px 12px;border-radius:6px">+ Broker</button></div>
+<div style="display:flex;flex:1"><div style="width:280px;background:#1e222d;color:#fff;padding:10px;font-size:12px"><div style="color:#868993;font-size:10px">MARKET WATCH</div><div style="background:#2962ff;padding:8px;margin:8px 0;border-radius:4px">EURUSD 1.08742</div><div style="padding:8px">XAUUSD 4170.85</div></div><div id="chartPC" style="flex:1;background:#131722"></div></div>
+</div>
+
+<script>
+function initChart(el){
+ const c = LightweightCharts.createChart(el,{layout:{background:{color:'#131722'},textColor:'#d1d4dc'},grid:{vertLines:{color:'#1e222d'},horzLines:{color:'#1e222d'}},width:el.clientWidth,height:el.clientHeight,rightPriceScale:{scaleMargins:{top:0.1,bottom:0.1}}});
+ const s=c.addCandlestickSeries({upColor:'#26a69a',downColor:'#ef5350',wickUpColor:'#26a69a',wickDownColor:'#ef5350'});
+ s.setData([{time:1704067200,open:4170,high:4175,low:4165,close:4171},{time:1704070800,open:4171,high:4178,low:4168,close:4174},{time:1704074400,open:4174,high:4180,low:4170,close:4172}]);
+ new ResizeObserver(()=>{c.applyOptions({width:el.clientWidth,height:el.clientHeight})}).observe(el);
+ return s;
+}
+initChart(document.getElementById('chart'));
+const pcEl=document.getElementById('chartPC');if(pcEl) initChart(pcEl);
+setInterval(()=>{let b=(4170+Math.random()).toFixed(2);let a=(parseFloat(b)+0.32).toFixed(2);let bm=document.getElementById('bidM');if(bm){bm.innerText=b;document.getElementById('askM').innerText=a}},900);
+</script>
+</body>
+</html>
