@@ -1,0 +1,9 @@
+{
+  "name": "BRYX Terminal",
+  "short_name": "BRYX",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#131722",
+  "theme_color": "#2962ff",
+  "icons": [{"src":"https://i.imgur.com/8Km9tLL.png","sizes":"512x512","type":"image/png"}]
+}
