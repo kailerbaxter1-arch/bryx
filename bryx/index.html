@@ -19,8 +19,9 @@ html,body{height:100%;overflow:hidden;position:fixed;width:100%;background:#1317
 .sellTop{background:#ff3b30} .buyTop{background:#007aff}
 #pc{display:none}
 @media(min-width:769px){
- #pc{display:flex;flex:1} #app{display:none}
+#pc{display:flex!important;height:100vh;width:100vw;flex-direction:column} #app{display:none!important}
 }
+ @media(max-width:768px){ #pc{display:none!important} #app{display:flex!important} }
 </style>
 </head>
 <body>
